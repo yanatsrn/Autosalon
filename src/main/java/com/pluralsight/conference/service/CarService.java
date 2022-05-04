@@ -1,8 +1,6 @@
 package com.pluralsight.conference.service;
 
-import com.pluralsight.conference.entity.Car;
-import com.pluralsight.conference.entity.Person;
-import com.pluralsight.conference.entity.Purchase;
+import com.pluralsight.conference.entity.*;
 import com.pluralsight.conference.repository.CarRepository;
 import com.pluralsight.conference.validator.CarValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +25,13 @@ public class CarService {
         carRepository.deleteByCarId(id);
     }
 
-    public void updateCar(Car car) {
+    public Car updateCar(Car car, Company company, Type type) {
+        car.setCompany(company);
+        car.setTypeCar(type);
+        car.getCompany().getCars().add(car);
+        car.getTypeCar().getModels().add(car);
         carRepository.save(car);
+        return car;
     }
 
     public Car findByCarId(int id) {

@@ -1,7 +1,6 @@
 package com.pluralsight.conference.report;
 
 import com.pluralsight.conference.entity.Car;
-import com.pluralsight.conference.entity.Person;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;

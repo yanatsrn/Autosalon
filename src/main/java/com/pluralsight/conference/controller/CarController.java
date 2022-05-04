@@ -3,7 +3,6 @@ package com.pluralsight.conference.controller;
 
 import com.pluralsight.conference.entity.*;
 import com.pluralsight.conference.report.CarReport;
-import com.pluralsight.conference.report.PeopleReport;
 import com.pluralsight.conference.service.*;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -12,9 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.RedirectView;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,29 +21,22 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
 public class CarController {
 
     private final CarService carService;
-    private final CompanyService companyService;
-    private final TypeService typeService;
     private final PurchaseService purchaseService;
     private final PersonService personService;
-    private final CalculatorService calculatorService;
+    private final Facade facade;
 
-    public CarController(CarService carService, CompanyService companyService, TypeService typeService,
-                         PurchaseService purchaseService, PersonService personService, CalculatorService calculatorService) {
+    public CarController(CarService carService, PurchaseService purchaseService, PersonService personService, Facade facade) {
         this.carService = carService;
-        this.companyService = companyService;
-        this.typeService = typeService;
         this.purchaseService = purchaseService;
         this.personService = personService;
-        this.calculatorService = calculatorService;
+        this.facade = facade;
     }
 
     @GetMapping(value="/compare")
@@ -75,8 +65,6 @@ public class CarController {
     @PostMapping(value="/searchCar")
     public RedirectView searchPage(@RequestParam("selectedParam") String param, @RequestParam("input") String input, RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("/searchCar", true);
-        System.out.println(param);
-        System.out.println(input);
         List<Car> cars = carService.findCars(param, input);
         redirectAttributes.addFlashAttribute("count", cars.size());
         redirectAttributes.addFlashAttribute("cars", cars);
@@ -85,8 +73,8 @@ public class CarController {
 
     @GetMapping(value = "/addCar")
     public String addCarView(Model model) {
-        List<Company> companies = companyService.getCompanies();
-        List<Type> types = typeService.getTypes();
+        List<Company> companies = facade.getCompanies();
+        List<Type> types = facade.getTypes();
         model.addAttribute("car", new Car());
         model.addAttribute("companies", companies);
         model.addAttribute("types", types);
@@ -97,9 +85,8 @@ public class CarController {
     @PostMapping("/addCar")
     public RedirectView addCar(@ModelAttribute("car") Car car, RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("/addCar", true);
-        Company company = companyService.findByCompanyName(car.getCompany().getCompanyName()).get(0);
-        String[] typeIsStr = car.getTypeCar().getBody().split(" ");
-        Type type = typeService.findByTypeId(Integer.parseInt(typeIsStr[0]));
+        Company company = facade.findCompanyByName(car.getCompany().getCompanyName());
+        Type type = facade.findTypeByTypeId(car.getTypeCar().getBody());
         car.setCompany(company);
         car.setTypeCar(type);
         String error = carService.correctCar(car);
@@ -137,8 +124,8 @@ public class CarController {
 
     @GetMapping(value = "/updateCar")
     public String updateCarView(@RequestParam int carId, ModelMap model) {
-        List<Company> companies = companyService.getCompanies();
-        List<Type> types = typeService.getTypes();
+        List<Company> companies = facade.getCompanies();
+        List<Type> types = facade.getTypes();
         model.addAttribute("companies", companies);
         model.addAttribute("types", types);
         Car car = carService.findByCarId(carId);
@@ -150,21 +137,11 @@ public class CarController {
     @PostMapping("/updateCar")
     public RedirectView updateCar(@ModelAttribute("car") Car car, RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("/updateCar?carId=" + car.getCarId(), true);
-        Company company = companyService.findByCompanyName(car.getCompany().getCompanyName()).get(0);
-        String[] typeIsStr = car.getTypeCar().getBody().split(" ");
-        Type type = typeService.findByTypeId(Integer.parseInt(typeIsStr[0]));
-        car.setCompany(company);
-        car.setTypeCar(type);
-        car.getCompany().getCars().add(car);
-        car.getTypeCar().getModels().add(car);
-        Car updatedCar = car;
-        carService.updateCar(car);
+        Company company = facade.findCompanyByName(car.getCompany().getCompanyName());
+        Type type = facade.findTypeByTypeId(car.getTypeCar().getBody());
+        Car updatedCar = carService.updateCar(car, company, type);
         redirectAttributes.addFlashAttribute("updatedCar", updatedCar);
         redirectAttributes.addFlashAttribute("updateCarSuccess", true);
-
-//        }
-//        else
-//            redirectAttributes.addFlashAttribute("updatePersonSuccess", false);
         return redirectView;
     }
 
@@ -196,13 +173,10 @@ public class CarController {
             XSSFWorkbook workbook = new XSSFWorkbook();
             XSSFSheet sheet = workbook.createSheet("Cars");
             CarReport.writeHeaderLine(sheet);
-
             CarReport.writeDataLines(cars, workbook, sheet);
-
             ServletOutputStream outputStream = response.getOutputStream();
             workbook.write(outputStream);
             workbook.close();
-
             outputStream.close();
         } catch (IOException | SQLException e) {
             e.printStackTrace();

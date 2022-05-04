@@ -1,16 +1,10 @@
 package com.pluralsight.conference.service;
 
 import com.pluralsight.conference.entity.Person;
-import com.pluralsight.conference.report.PeopleReport;
 import com.pluralsight.conference.repository.PersonRepository;
 import com.pluralsight.conference.validator.Validator;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.ServletOutputStream;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 

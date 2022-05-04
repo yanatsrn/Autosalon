@@ -18,37 +18,34 @@ public class PeopleReport {
         Row headerRow = sheet.createRow(0);
 
         Cell headerCell = headerRow.createCell(0);
-        headerCell.setCellValue("person_id");
+        headerCell.setCellValue("id");
 
         headerCell = headerRow.createCell(1);
-        headerCell.setCellValue("surname");
+        headerCell.setCellValue("Фамилия ммм");
 
         headerCell = headerRow.createCell(2);
-        headerCell.setCellValue("name");
+        headerCell.setCellValue("Имя");
 
         headerCell = headerRow.createCell(3);
-        headerCell.setCellValue("age");
+        headerCell.setCellValue("Возраст");
 
         headerCell = headerRow.createCell(4);
-        headerCell.setCellValue("phone");
+        headerCell.setCellValue("Телефон");
 
         headerCell = headerRow.createCell(5);
-        headerCell.setCellValue("mail");
+        headerCell.setCellValue("Почта");
 
         headerCell = headerRow.createCell(6);
-        headerCell.setCellValue("user_id");
+        headerCell.setCellValue("Логин");
 
         headerCell = headerRow.createCell(7);
-        headerCell.setCellValue("login");
+        headerCell.setCellValue("Роль");
 
         headerCell = headerRow.createCell(8);
-        headerCell.setCellValue("role");
+        headerCell.setCellValue("Скидка");
 
         headerCell = headerRow.createCell(9);
-        headerCell.setCellValue("discount_sum");
-
-        headerCell = headerRow.createCell(10);
-        headerCell.setCellValue("active");
+        headerCell.setCellValue("Активность");
     }
 
     public static void writeDataLines(List<Person> people, XSSFWorkbook workbook,
@@ -61,7 +58,6 @@ public class PeopleReport {
             String age = String.valueOf(p.getAge());
             String phone = p.getPhone();
             String mail = p.getMail();
-            String userId = String.valueOf(p.getUser().getUserId());
             String login = p.getUser().getLogin();
             String role = p.getUser().getRole();
             String active = String.valueOf(p.getUser().isActive());
@@ -87,9 +83,6 @@ public class PeopleReport {
 
             cell = row.createCell(columnCount++);
             cell.setCellValue(mail);
-
-            cell = row.createCell(columnCount++);
-            cell.setCellValue(userId);
 
             cell = row.createCell(columnCount++);
             cell.setCellValue(login);

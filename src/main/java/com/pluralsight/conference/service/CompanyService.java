@@ -3,7 +3,6 @@ package com.pluralsight.conference.service;
 import com.pluralsight.conference.entity.Company;
 import com.pluralsight.conference.repository.CompanyRepository;
 import com.pluralsight.conference.validator.CarValidator;
-import com.pluralsight.conference.validator.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
