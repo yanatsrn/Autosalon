@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="css/style_users.css">
+	<title>Авторизация</title>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="conteiner">
+			<div class="window-users">
+				<form action="">
+
+					<div class="title title-reg">Регистрация</div>
+
+					<!-- фамилия и имя -->
+					<div class="forms">
+						<div class="field">
+							<p>Фамилия</p>
+							<input type="text" class="input input-reg" name="surname" placeholder="Ваше фамилия" id=""
+								required>
+						</div>
+						<div class="field">
+							<p>Имя</p>
+							<input type="text" class="input input-reg" name="name" placeholder="Ваше имя" id=""
+								required>
+						</div>
+
+						<!-- возраст -->
+						<div class="field">
+							<p>Возраст</p>
+							<div class="age">
+								<input type="number" class="input input-reg" name="age" min="0" max="150"
+									placeholder="Ваше возраст" required>
+							</div>
+						</div>
+
+						<!-- телефон -->
+						<div class="field">
+							<p>Телефон</p>
+							<div class="phone">
+								<input type="tel" class="input input-reg" name="phone" placeholder="Ваше телефон"
+									required> <!-- pattern="+375(-[0-9]{2})-[0-9]{7}" -->
+							</div>
+						</div>
+
+						<!-- mail -->
+						<div class="field">
+							<p>E-mail</p>
+							<div class="mail">
+								<input type="mail" class="input input-reg" name="mail" placeholder="Ваше e-mail"
+									required>
+							</div>
+						</div>
+
+						<!-- логин и пороль -->
+						<div class="field">
+							<p>Логин</p>
+							<input type="text" class="input input-reg" name="login" placeholder="Введиите логин" id=""
+								required>
+						</div>
+						<div class="field">
+							<p>Пароль</p>
+							<input type="password" class="input input-reg" name="password" placeholder="Введиите пороль"
+								id="" required>
+						</div>
+
+						<!-- скрытый -->
+						<div class="field hidden">
+							<p>Роль</p>
+							<div class="role">
+								<input type="hidden" class="input input-reg" name="role">
+							</div>
+						</div>
+
+						<!-- скидка -->
+						<div class="field">
+							<p>Скидка</p>
+							<div class="discount">
+								<input type="number" class="input input-reg" min="0" max="100" name="iscount"
+									placeholder="Ваша скидка">
+							</div>
+						</div>
+						<!-- кнопки зарегестрироваться и отмена -->
+						<div class="btns">
+							<input type="submit" value="Зарегистрироваться" class="btn btn-reg">
+							<input type="button" value="Отмена" class="btn btn-reg">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
